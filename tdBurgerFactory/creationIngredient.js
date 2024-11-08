@@ -1,3 +1,4 @@
+// Creation ingredients
 let listIngredient = new Map();
 
 function createIngredient(event) {
