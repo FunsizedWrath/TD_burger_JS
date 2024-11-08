@@ -28,7 +28,10 @@ function createIngredient(event) {
         }, 5000);
     } else {
         listIngredient.set(nameIngredient, quantityIngredient);
+        sessionStorage.setItem("listIngredient", JSON.stringify(Array.from(listIngredient.entries())));
         console.log("Ingrédient ajouté : ", { nameIngredient, quantityIngredient });
+        document.getElementById("nameIngredient").value = '';
+        document.getElementById("quantity").value = '';
     }
 }
 
