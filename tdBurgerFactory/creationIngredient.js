@@ -1,48 +1,34 @@
-// Creation ingredient
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("formIngredient").addEventListener("submit", function(event) {
-        createIngredient(event);
-    });
-});
-
 let listIngredient = new Map();
 
 function createIngredient(event) {
-    event.preventDefault(); //Prevent the form from being submitted
+    event.preventDefault(); // Prevent form submission
 
-    let nameIngredient = document.getElementById("nameIngredient").value.trim();
-    let quantityIngredient = parseInt(document.getElementById("quantity").value, 10);
+    let nameIngredient = document.getElementById("nameIngredient").value;
+    let quantityIngredient = document.getElementById("quantity").value;
 
-    // console.log(nameIngredient);
-    // console.log(quantityIngredient);
+    // Clear previous error messages
+    let existingErrorMessage = document.getElementById("errorMessage");
+    if (existingErrorMessage) {
+        existingErrorMessage.remove();
+    }
 
-     // Remove any existing error message
-     let existingErrorMessage = document.getElementById("errorMessage");
-     if (existingErrorMessage) {
-         existingErrorMessage.remove();
-     }
-
-    if (nameIngredient !== String || nameIngredient.trim() === '' || isNaN(quantityIngredient) || quantityIngredient <= 0) {
+    if (nameIngredient === "" || isNaN(quantityIngredient) || quantityIngredient <= 0) {
         let errorMessage = document.createElement("p");
         errorMessage.setAttribute("id", "errorMessage");
         errorMessage.innerText = "Erreur de saisie";
         document.body.appendChild(errorMessage);
+        console.log("Erreur de saisie : ", { nameIngredient, quantityIngredient });
 
-    }
-    else {
+        // Remove the error message after 5 seconds
+        setTimeout(() => {
+            if (errorMessage) {
+                errorMessage.remove();
+            }
+        }, 5000);
+    } else {
         listIngredient.set(nameIngredient, quantityIngredient);
+        console.log("Ingrédient ajouté : ", { nameIngredient, quantityIngredient });
     }
-    // for (const [key, value] of listIngredient) {
-    //     console.log(key + " : " + value);
-    // }
 }
-// function showMap() {
-//     for (const [key, value] of listIngredient) {
-//         console.log(key + " : " + value);
-//     }
-// }
 
-addEventListener("submit", createIngredient);
-// setTimeout(showMap, 5000);
-
-// TO DO : ERROR MESSAGE
+document.getElementById("formIngredient").addEventListener("submit", createIngredient);
