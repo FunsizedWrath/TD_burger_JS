@@ -16,7 +16,8 @@ function createIngredient(event) {
         let errorMessage = document.createElement("p");
         errorMessage.setAttribute("id", "errorMessage");
         errorMessage.innerText = "Erreur de saisie";
-        document.body.appendChild(errorMessage);
+        let formElement = document.getElementById("formIngredient");
+        formElement.insertAdjacentElement('afterend', errorMessage);
         console.log("Erreur de saisie : ", { nameIngredient, quantityIngredient });
 
         // Remove the error message after 5 seconds
