@@ -1,5 +1,19 @@
 // Creation ingredients
-let listIngredient = new Map();
+
+function getIngredientsFromStorage() {
+    const storedIngredients = sessionStorage.getItem("listIngredient");
+    let listIngredient = new Map();
+    if (storedIngredients) {
+        listIngredient = new Map(JSON.parse(storedIngredients));
+    }
+    return listIngredient;
+}
+
+function updateIngredientStorage(listIngredient) {
+    sessionStorage.setItem("listIngredient", JSON.stringify(Array.from(listIngredient.entries())));
+}
+
+let listIngredient = getIngredientsFromStorage();
 
 function createIngredient(event) {
     event.preventDefault(); // Prevent form submission
