@@ -1,7 +1,7 @@
 // Create burger
 
 function getIngredientsFromStorage() {
-    const storedIngredients = sessionStorage.getItem("listIngredient");
+    const storedIngredients = localStorage.getItem("listIngredient");
     let listIngredient = new Map();
     if (storedIngredients) {
         listIngredient = new Map(JSON.parse(storedIngredients));
@@ -10,7 +10,7 @@ function getIngredientsFromStorage() {
 }
 
 function updateIngredientStorage(listIngredient) {
-    sessionStorage.setItem("listIngredient", JSON.stringify(Array.from(listIngredient.entries())));
+    localStorage.setItem("listIngredient", JSON.stringify(Array.from(listIngredient.entries())));
 }
 
 function displayError(errorMessageText) {
@@ -48,8 +48,8 @@ function refreshSelects(listIngredient) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Load ingredients from sessionStorage
-    const storedIngredients = sessionStorage.getItem("listIngredient");
+    // Load ingredients from localStorage
+    const storedIngredients = localStorage.getItem("listIngredient");
     let listIngredient = new Map();
     if (storedIngredients) {
         listIngredient = new Map(JSON.parse(storedIngredients));
@@ -85,7 +85,8 @@ function createBurger(event, listIngredient) {
         displayError("Erreur de saisie : l'un des champs est vide");
     } else {
         listIngredient = getIngredientsFromStorage();
-        for (let [name, quantity] of listIngredient) {
+        ingredientUpdated = new Map(listIngredient);
+        for (let [name, quantity] of ingredientUpdated) {
             if (ingredient1 == name)
                 quantity -= 1;
             if (ingredient2 == name)
@@ -96,27 +97,28 @@ function createBurger(event, listIngredient) {
                 displayError("Erreur de quantité, il nous manque de l'ingrédient suivant : " + name+", quantité manquante : "+Math.abs(quantity));
                 return;
             }
-        }
-        for (let [name, quantity] of listIngredient) {
-            if (ingredient1 == name)
-                quantity -= 1;
-            if (ingredient2 == name)
-                quantity -= 1;
-            if (ingredient3 == name)
-                quantity -= 1;
-            listIngredient.set(name, quantity);
+            ingredientUpdated.set(name, quantity);
             if (quantity == 0)
-                listIngredient.delete(name);
+                ingredientUpdated.delete(name);
         }
-        updateIngredientStorage(listIngredient);
+        updateIngredientStorage(ingredientUpdated);
+        listIngredient = ingredientUpdated;
 
         let burger = {
             name: burgerName,
             ingredients: [ingredient1, ingredient2, ingredient3]
         };
         console.log("Burger créé : ", burger);
-        // Optionally, store the burger in sessionStorage or another storage
-        sessionStorage.setItem("burger", JSON.stringify(burger));
+
+        // Optionally, store the burger in localStorage or another storage
+        let burgersJSON = localStorage.getItem("burgers");
+        if (burgersJSON) {
+            let burgers = JSON.parse(burgersJSON);
+            burgers.push(burger);
+            localStorage.setItem("burgers", JSON.stringify(burgers));
+        } else {
+            localStorage.setItem("burgers", JSON.stringify([burger]));
+        }
 
         // Optionally, clear the form fields after successful submission
         document.getElementById("nameBurger").value = '';

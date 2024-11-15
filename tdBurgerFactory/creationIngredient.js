@@ -1,7 +1,7 @@
 // Creation ingredients
 
 function getIngredientsFromStorage() {
-    const storedIngredients = sessionStorage.getItem("listIngredient");
+    const storedIngredients = localStorage.getItem("listIngredient");
     let listIngredient = new Map();
     if (storedIngredients) {
         listIngredient = new Map(JSON.parse(storedIngredients));
@@ -10,7 +10,7 @@ function getIngredientsFromStorage() {
 }
 
 function updateIngredientStorage(listIngredient) {
-    sessionStorage.setItem("listIngredient", JSON.stringify(Array.from(listIngredient.entries())));
+    localStorage.setItem("listIngredient", JSON.stringify(Array.from(listIngredient.entries())));
 }
 
 let listIngredient = getIngredientsFromStorage();
@@ -43,7 +43,7 @@ function createIngredient(event) {
         }, 5000);
     } else {
         listIngredient.set(nameIngredient, quantityIngredient);
-        sessionStorage.setItem("listIngredient", JSON.stringify(Array.from(listIngredient.entries())));
+        localStorage.setItem("listIngredient", JSON.stringify(Array.from(listIngredient.entries())));
         console.log("Ingrédient ajouté : ", { nameIngredient, quantityIngredient });
         document.getElementById("nameIngredient").value = '';
         document.getElementById("quantity").value = '';
