@@ -93,7 +93,7 @@ function createBurger(event, listIngredient) {
             if (ingredient3 == name)
                 quantity -= 1;
             if (quantity < 0) {
-                displayError("Erreur de quantité, il nous manque de l'ingrédient suivant : " + name)
+                displayError("Erreur de quantité, il nous manque de l'ingrédient suivant : " + name+", quantité manquante : "+Math.abs(quantity));
                 return;
             }
         }

@@ -25,19 +25,28 @@ request.onload = () => {
         item.productions.forEach(prod => {
             productions.push(prod.nom);
         });
-        // insertion de virgule entre les productions
-        let productionsStr = productions.join(', ');
 
         // creation du message
-        let message = `Notre restaurant travaille avec des produits locaux provenant de la ferme bio numéro ${numeroBio} de Monsieur ${gerant} située à l’adresse ${lieu} ${codePostal} ${ville}. Cette ferme intervient dans les commerces : ${productionsStr}.`;
+        let message = `Notre restaurant travaille avec des produits locaux provenant de la ferme bio numéro ${numeroBio} de Monsieur ${gerant} située à l’adresse ${lieu} ${codePostal} ${ville}. Cette ferme intervient dans les commerces :`;
+        
         console.log(message);
 
-        // Display du message
+        // afficher le message
         let messageElement = document.createElement("p");
         messageElement.innerText = message;
         document.getElementById("messagecontact").appendChild(messageElement);
+
+        // afficher la liste des productions
+        let productionsList = document.createElement("ul");
+        item.productions.forEach(prod => {
+            let listItem = document.createElement("li");
+            listItem.innerText = `- ${prod.nom}`;
+            productionsList.appendChild(listItem);
+        });
+
+        // ajouter la liste des productions au message
+        document.getElementById("messagecontact").appendChild(productionsList);
     } else {
-        // en cas d'erreur
-        console.error("KO");
+        console.error("An error occurred");
     }
 };
